@@ -40,8 +40,6 @@ MongoClient.connect(url, {
     });
 
 
-console.log(col);
-
 app.get('/', function (req, res) {
     res.render('index.html', {});
 
