@@ -179,8 +179,8 @@ app.post('/removedev', function (req, res) {
             $eq: "EXPERT"
         }
     };   
-    Task.deleteMany(query, function (err, obj) {});
-    Task.deleteMany(query2, function (err, obj) {});
+    Developer.deleteMany(query, function (err, obj) {});
+    Developer.deleteMany(query2, function (err, obj) {});
     res.redirect('listdev.html')
 });
 
