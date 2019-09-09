@@ -6,18 +6,20 @@
 <body>
         <h3>
                 <a href = "index.html"> Home</a>
-                <a href="newtask.html"> Add new task</a>
-                <a href="listtasks.html"> List all tasks</a>
-                <a href="taskdelete.html"> Delete a task</a>            
-                <a href="completetaskdel.html"> Remove all completed tasks</a>
+                <a href="newtask.html"> Add new task </a>
+                <a href="adddev.html"> Add new developer </a>
+                <a href="listdev.html"> View developers </a>
+                <a href="listtasks.html"> List tasks </a>
+                <a href="taskdelete.html"> Remove a task </a>
+                <a href="completetaskdel.html"> Remove all completed tasks </a>
             </h3>
     <h3>Enter ID of task to update</h3>
     <form action="/update" method="POST">
-        Task ID <input type="text" name="taskID" />
+        Task ID <input type="text" name="ID" />
         <br>
         Task Status <select name = "taskStatus">
             <option value> </option>
-            <option value ="In progress">In Progress</option>
+            <option value ="InProgress">In Progress</option>
             <option value = "Completed">Completed</option>
         </select>
         <br>

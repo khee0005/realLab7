@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+    <h3>
+        <a href="index.html"> Home</a>
+        <a href="newtask.html"> Add new task </a>
+        <a href="adddev.html"> Add new developer </a>
+        <a href="listtasks.html"> List tasks </a>
+        <a href="taskdelete.html"> Remove a task </a>
+        <a href="completetaskdel.html"> Remove all completed tasks </a>
+        <a href="taskupdate.html"> Update a task </a>
+    </h3>
+    </br>
+    <table>
+        <tr>
+            <td>Developer ID</td>
+            <td>Database ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Level</td>
+            <td>State</td>
+            <td>Suburb</td>
+            <td>Street</td>
+            <td>Unit</td>
+        </tr>
+        <% for (var i = 0; i < db.length; i++) { %>
+        <tr>
+            <td><%= db[i].devID %></td>
+            <td><%= db[i]._id %></td>
+            <td><%= db[i].name.firstName %></td>
+            <td><%= db[i].name.lastName %></td>
+            <td><%= db[i].level %></td>
+            <td><%= db[i].address.state %></td>
+            <td><%= db[i].address.suburb %></td>
+            <td><%= db[i].address.street %></td>
+            <td><%= db[i].address.unit %></td>
+
+
+
+        </tr>
+        <% }%>
+    </table>
+    <br>
+    Clear developer list?<br>
+    <form action="/removedev" method="POST">
+        <button> Yes </button>
+        <form action="/noremovedev" method="POST">
+            <button>No</button>
+</body>
+
+</html>

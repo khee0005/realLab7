@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h3>
+        <a href="index.html"> Home</a>
+        <a href="newtask.html"> Add new task </a>
+        <a href="listdev.html"> View developers </a>
+        <a href="listtasks.html"> List tasks </a>
+        <a href="taskdelete.html"> Remove a task </a>
+        <a href="completetaskdel.html"> Remove all completed tasks </a>
+        <a href="taskupdate.html"> Update a task </a>
+    </h3>
+    </br>
+
+    <form action="/devdata" method="POST">
+        Developer Name <br>
+        First Name <input type="text" name="firstName" />
+        Last Name <input type="text" name="lastName" /><br>
+        Programming Level <select name="level">
+            <option value> </option>
+            <option value="BEGINNER">Beginner</option>
+            <option value="EXPERT">Expert</option>
+        </select>
+        <br>
+        Address <br>
+        State <input type="text" name="state" /><br>
+        Suburb <input type="text" name="suburb" /><br>
+        Street <input type="text" name="street" /><br>
+        Unit<input type="number" name="unit" /><br>
+        <button> Submit </button>
+</body>
+
+</html>

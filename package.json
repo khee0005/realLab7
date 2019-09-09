@@ -1,0 +1,24 @@
+{
+  "name": "npminstalljson",
+  "version": "1.0.0",
+  "description": "Mongoose",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khee0005/lab6.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khee0005/lab6/issues"
+  },
+  "homepage": "https://github.com/khee0005/lab6#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2"
+  },
+  "devDependencies": {}
+}

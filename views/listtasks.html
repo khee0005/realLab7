@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <style>
         table,
@@ -7,18 +8,20 @@
             border: 1px solid black;
         }
     </style>
-                    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 
 <body>
-        <h3>
-                <a href = "index.html"> Home</a>
-                <a href="newtask.html"> Add new task</a>
-                <a href="taskdelete.html"> Delete a task</a>
-                <a href="completetaskdel.html"> Remove all completed tasks</a>
-                <a href="taskupdate.html"> Update a task</a>     
-            </h3>
+    <h3>
+        <a href="index.html"> Home</a>
+        <a href="newtask.html"> Add new task </a>
+        <a href="adddev.html"> Add new developer </a>
+        <a href="listdev.html"> View developers </a>
+        <a href="taskdelete.html"> Remove a task </a>
+        <a href="completetaskdel.html"> Remove all completed tasks </a>
+        <a href="taskupdate.html"> Update a task </a>
+    </h3>
     </br>
     <table>
         <tr>
@@ -30,15 +33,15 @@
             <td>Task Description</td>
         </tr>
         <% for (var i = 0; i < db.length; i++) { %>
-            <tr>
-                <td><%= db[i]._id %></td>
-                <td><%= db[i].task %></td>
-                <td><%= db[i].name %></td>
-                <td><%= db[i].date %></td>
-                <td><%= db[i].status %></td>
-                <td><%= db[i].desc %></td>
-            </tr>
-            <% }%>
+        <tr>
+            <td><%= db[i].taskID %></td>
+            <td><%= db[i].name %></td>
+            <td><%= db[i].assigned %></td>
+            <td><%= db[i].dueDate %></td>
+            <td><%= db[i].status %></td>
+            <td><%= db[i].desc %></td>
+        </tr>
+        <% }%>
 </body>
 
 </html>

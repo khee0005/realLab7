@@ -1,11 +1,14 @@
 let express = require('express');
-let morgan = require('morgan');
+let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
-let mongodb = require('mongodb');
+
+
 
 let app = express()
 
-app.use(morgan('common'));
+let Developer = require('./models/devSchema');
+let Task = require('./models/taskSchema');
+
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -18,27 +21,12 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-let MongoClient = mongodb.MongoClient;
-let url = 'mongodb://localhost:27017/';
-let viewsPath = __dirname + "/views/";
-let taskdb = null;
-let col;
-
-
-MongoClient.connect(url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    },
-    function (err, client) {
-        if (err) {
-            console.log("Err  ", err);
-        } else {
-            console.log("Connected successfully to server");
-            taskdb = client.db("fit2095db");
-            col = taskdb.collection('todoapp');
-        }
-    });
-
+let url = 'mongodb://localhost:27017/fit2095db';
+mongoose.connect(url, {
+    useNewUrlParser: true
+}, function (err) {
+    if (err) console.log(err);
+})
 
 app.get('/', function (req, res) {
     res.render('index.html', {});
@@ -54,10 +42,29 @@ app.get('/newtask.html', function (req, res) {
 
 });
 
+app.get('/adddev.html', function (req, res) {
+    res.render('adddev.html', {});
+
+});
+
+app.get('/getdevs', function (req, res) {
+    Developer.find().exec(function (err, data) {
+        res.send(data)
+    })
+});
+
 app.get('/listtasks.html', function (req, res) {
-    col.find({}).toArray(function (err, result) {
-        res.render('listtasks', {
-            db: result
+    Task.find().exec(function (err, data) {
+        res.render('listtasks.html', {
+            db: data
+        })
+    });
+});
+
+app.get('/listdev.html', function (req, res) {
+    Developer.find().exec(function (err, data) {
+        res.render('listdev.html', {
+            db: data
         })
     });
 });
@@ -77,53 +84,123 @@ app.get('/taskupdate.html', function (req, res) {
 
 });
 
+app.get('/insertmany.html', function (req, res) {
+    res.render('insertmany.html', {});
+
+});
+
 app.post('/data', function (req, res) {
+    let taskDetails = req.body;
+    let ID = Math.round(Math.random() * 10000000);
+    let task = new Task({
+        taskID: ID,
+        name: taskDetails.taskName,
+        assigned: taskDetails.devID,
+        dueDate: taskDetails.dueDate,
+        status: taskDetails.taskStatus,
+        desc: taskDetails.taskDesc
+    });
+    task.save(function (err) {
+        if (err) throw err;
+    });
+    res.redirect('/listtasks.html');
+});
+
+app.post('/devdata', function (req, res) {
+    let devDetails = req.body;
+    let ID = Math.round(Math.random() * 1000);
+    let dev = new Developer({
+        devID: ID,
+        name: {
+            firstName: devDetails.firstName,
+            lastName: devDetails.lastName
+        },
+        level: devDetails.level,
+        address: {
+            state: devDetails.state,
+            suburb: devDetails.suburb,
+            street: devDetails.street,
+            unit: devDetails.unit
+        }
+    });
+    dev.save(function (err) {
+        if (err) throw err;
+    });
+
+    res.redirect('/listdev.html');
+});
+
+app.post('/manydata', function (req, res) {
     console.log('I got a post request');
     let taskDetails = req.body;
-    console.log(taskDetails);
-    col.insertOne({
+    let count = parseInt(req.body.taskCount);
+    let doc_1 = ({
         task: taskDetails.taskName,
         name: taskDetails.nameAssigned,
         date: taskDetails.dueDate,
         status: taskDetails.taskStatus,
         desc: taskDetails.taskDesc
     })
+    console.log(doc_1);
+    let taskAdd = count * doc_1;
+    console.log(taskAdd);
+    col.insertMany(taskAdd);
     res.redirect('/listtasks.html');
 })
 
 app.post('/remove', function (req, res) {
-    let idDel = req.body.taskID;
-    console.log(idDel)
+    let idDel = req.body.ID;
     let query = {
-        _id: new mongodb.ObjectID(idDel)
+        taskID: idDel
     };
-    col.deleteOne(query, function(err, obj){});
+    Task.deleteOne(query, function (err, obj) {});
     res.redirect('/listtasks.html')
 })
 
+
 app.post('/removecomp', function (req, res) {
-    let query = {status: {$eq: "Completed"}};
-    col.deleteMany(query, function (err, obj) {});
+    let query = {
+        status: {
+            $eq: "Completed"
+        }
+    };
+    Task.deleteMany(query, function (err, obj) {});
     res.redirect('listtasks.html')
+});
+
+app.post('/removedev', function (req, res) {
+    let query = {
+        level: {
+            $eq: "BEGINNER"
+        }
+    };
+    let query2 = {
+        level: {
+            $eq: "EXPERT"
+        }
+    };   
+    Task.deleteMany(query, function (err, obj) {});
+    Task.deleteMany(query2, function (err, obj) {});
+    res.redirect('listdev.html')
 });
 
 app.post('/noremovecomp', function (req, res) {
-    res.redirect('listtasks.html')
+    res.redirect('listdev.html')
 });
 
 app.post('/update', function (req, res) {
-    let idUpdate = req.body.taskID;
+    let idUpdate = req.body.ID;
     let newStatus = req.body.taskStatus;
     let query = {
-        _id: new mongodb.ObjectID(idUpdate)
-    }
-    let theUpdate = {
+        taskID: idUpdate
+    };
+    let statusUpdate = {
         $set: {
             status: newStatus
         }
     };
-    col.updateOne(query, theUpdate);
-    res.redirect('/listtasks.html')
-})
+    Task.updateOne(query, statusUpdate, function(err, obj){});
+    res.redirect('listtasks.html')
+});
 
 app.listen(8080);
